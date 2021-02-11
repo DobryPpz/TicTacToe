@@ -209,46 +209,58 @@ def isWin(dict):
 os.system("cls")
 print("Witaj w grze kółko i krzyżyk!".center(41,'*'))
 
-while(True):
-    print("wpisz o jeśli chcesz grać kółkiem lub x jeśli krzyżykiem lub wpisz spację żeby zakończyć")
-    wybor = str(input())
-    if(wybor == 'o'):
-        enemy = 'x'
-        break
-    elif(wybor == 'x'):
-        enemy = 'o'
-        break
-    elif(wybor == ' '):
-        sys.exit()
-    else:
-        os.system("cls")
-        print("Złe dane")
+def gra():
+    global plansza
+    plansza = {
+        "top_l" : " ", "top_m" : " ", "top_r" : " ",
+        "mid_l" : " ", "mid_m" : " ", "mid_r" : " ",
+        "bot_l" : " ", "bot_m" : " ", "bot_r" : " "
+    }
+    global dostepne_ruchy
+    dostepne_ruchy = ["top_l","top_m","top_r","mid_l","mid_m","mid_r","bot_l","bot_m","bot_r"]
+    while(True):
+        print("wpisz o jeśli chcesz grać kółkiem lub x jeśli krzyżykiem lub wpisz spację żeby zakończyć")
+        wybor = str(input())
+        if(wybor == 'o'):
+            enemy = 'x'
+            break
+        elif(wybor == 'x'):
+            enemy = 'o'
+            break
+        elif(wybor == ' '):
+            sys.exit()
+        else:
+            os.system("cls")
+            print("Złe dane")
 
-wypisz(plansza)
+    wypisz(plansza)
 
-while(dostepne_ruchy):
-    print("Podaj ruch w dobrym formacie: ")
-    ruch = str(input())
-    if(ruch in dostepne_ruchy):
-        plansza[ruch] = wybor
-        dostepne_ruchy.remove(ruch)
-        os.system("cls")
-        wypisz(plansza)
-        input()
-        flaga_win,zwyc = isWin(plansza)
-        if(flaga_win == False and dostepne_ruchy):
-            a = calculateMove(plansza,wybor,enemy,dostepne_ruchy)
-            plansza[a] = enemy
-            dostepne_ruchy.remove(a)
+    while(dostepne_ruchy):
+        print("Podaj ruch w dobrym formacie: ")
+        ruch = str(input())
+        if(ruch in dostepne_ruchy):
+            plansza[ruch] = wybor
+            dostepne_ruchy.remove(ruch)
             os.system("cls")
             wypisz(plansza)
+            input()
             flaga_win,zwyc = isWin(plansza)
-            if(flaga_win == True):
+            if(flaga_win == False and dostepne_ruchy):
+                a = calculateMove(plansza,wybor,enemy,dostepne_ruchy)
+                plansza[a] = enemy
+                dostepne_ruchy.remove(a)
+                os.system("cls")
+                wypisz(plansza)
+                flaga_win,zwyc = isWin(plansza)
+                if(flaga_win == True):
+                    break
+            else:
                 break
         else:
-            break
-    else:
-        print("ten ruch już wykonano")
-
-print("zwycięzca: " + zwyc)
+            print("ten ruch już wykonano")
+    print("zwycięzca: " + zwyc)
+    input()
+    os.system("cls")
+while(True):
+    gra()
 
